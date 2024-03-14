@@ -35,7 +35,7 @@ I've created one controller that exposes endpoint **api/beststories** which take
 curl https://localhost:7035/api/beststories?n=20
 ```
 
-Since description of the task is not clearly stating, if sorting should be done on all top stories or only the "n" subset, I've assumed that it's the later. I'm fetching n items and then sorting those entries.
+Since description of the task is not clearly stating, if sorting should be done on all top stories or only the first "n" subset, I've assumed that it's the later. I'm fetching n items and then sorting those entries by score in descending order.
 
 ## Tests
 
