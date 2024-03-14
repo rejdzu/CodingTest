@@ -19,8 +19,8 @@ namespace Api.Tests
         {
             _testOutputHelper = testOutputHelper;
             _hackerNewsServiceMock = new Mock<IHackerNewsServiceClient>();
-            var logger = XUnitLogger.CreateLogger<CachedHackerNewsServiceDecorator>(_testOutputHelper);
-            var cachedService = new CachedHackerNewsServiceDecorator(_hackerNewsServiceMock.Object, logger);
+            var logger = XUnitLogger.CreateLogger<CachedHackerNewsService>(_testOutputHelper);
+            var cachedService = new CachedHackerNewsService(_hackerNewsServiceMock.Object, logger);
             _fixture = new Fixture();
             _service = new BestStoriesService(cachedService);
         }
@@ -66,7 +66,7 @@ namespace Api.Tests
                 Assert.Equal(expectedItem.By, actual.PostedBy);
                 Assert.Equal(expectedItem.Time, new DateTimeOffset(actual.Time).ToUnixTimeSeconds());
                 Assert.Equal(expectedItem.Score, actual.Score);
-                Assert.Equal(expectedItem.Kids.Count, actual.CommentCount);
+                Assert.Equal(expectedItem.Kids?.Count, actual.CommentCount);
             }
 
             Assert.Collection(data, itemsInspector.ToArray());

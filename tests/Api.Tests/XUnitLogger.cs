@@ -7,7 +7,7 @@ namespace Api.Tests
     public class XUnitLogger<T> : XUnitLogger, ILogger<T>
     {
         public XUnitLogger(ITestOutputHelper testOutputHelper, LoggerExternalScopeProvider scopeProvider)
-            : base(testOutputHelper, scopeProvider, typeof(T).FullName)
+            : base(testOutputHelper, scopeProvider, typeof(T).FullName ?? "default")
         {
         }
     }
@@ -34,10 +34,10 @@ namespace Api.Tests
 
         public bool IsEnabled(LogLevel logLevel) => logLevel != LogLevel.None;
 
-        public IDisposable BeginScope<TState>(TState state) => _scopeProvider.Push(state);
+        public IDisposable BeginScope<TState>(TState state) where TState : notnull => _scopeProvider.Push(state);
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
-            Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception,
+            Func<TState, Exception?, string> formatter)
         {
             var sb = new StringBuilder();
             sb.Append(GetLogLevelString(logLevel))

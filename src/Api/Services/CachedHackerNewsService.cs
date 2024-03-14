@@ -6,7 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Api.Services
 {
-    public class CachedHackerNewsServiceDecorator : IHackerNewsService
+    public class CachedHackerNewsService : IHackerNewsService
     {
         private const string BestStoriesKey = "beststories";
         private const string GetItemKeyPrefix = "getitem";
@@ -20,16 +20,14 @@ namespace Api.Services
         private readonly MemoryCache _itemsCache;
         private readonly TimeSpan _cacheInterval = TimeSpan.FromSeconds(30);
 
-        private readonly SemaphoreSlim _semaphore;
-
-        public CachedHackerNewsServiceDecorator(IHackerNewsServiceClient hackerNewsService, ILogger<CachedHackerNewsServiceDecorator> logger)
+        public CachedHackerNewsService(IHackerNewsServiceClient hackerNewsService, ILogger<CachedHackerNewsService> logger)
         {
             _hackerNewsService = hackerNewsService;
             _logger = logger;
+
             _cachedBestStoriesUrls = new ConcurrentDictionary<string, Task<int[]>>();
             _cachedItemsUrls = new ConcurrentDictionary<string, Task<HackerNewsItemDto>>();
             _itemsCache = new MemoryCache(new MemoryCacheOptions());
-            _semaphore = new SemaphoreSlim(1);
         }
 
         public async Task<int[]> GetBestStoriesAsync(CancellationToken cancellationToken = default)

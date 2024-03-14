@@ -17,11 +17,11 @@ namespace Api
 
             // register dependencies
             builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddConsole());
-            builder.Services.AddHttpClient<IHackerNewsServiceClient, HackerNewsService>(client =>
+            builder.Services.AddHttpClient<IHackerNewsServiceClient, HackerNewsServiceClient>(client =>
             {
                 client.BaseAddress = new Uri("https://hacker-news.firebaseio.com/");
             });
-            builder.Services.AddSingleton<IHackerNewsService, CachedHackerNewsServiceDecorator>();
+            builder.Services.AddSingleton<IHackerNewsService, CachedHackerNewsService>();
             builder.Services.AddTransient<IBestStoriesService, BestStoriesService>();
             
             var app = builder.Build();

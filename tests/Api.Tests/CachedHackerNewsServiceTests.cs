@@ -8,19 +8,19 @@ using Xunit.Abstractions;
 
 namespace Api.Tests
 {
-    public class CachedHackerNewsServiceDecoratorTests
+    public class CachedHackerNewsServiceTests
     {
         private readonly ITestOutputHelper _testOutputHelper;
         private readonly Mock<IHackerNewsServiceClient> _mockHackerNewsService;
-        private readonly CachedHackerNewsServiceDecorator _service;
+        private readonly CachedHackerNewsService _service;
         private readonly Fixture _fixture;
 
-        public CachedHackerNewsServiceDecoratorTests(ITestOutputHelper testOutputHelper)
+        public CachedHackerNewsServiceTests(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
             _mockHackerNewsService = new Mock<IHackerNewsServiceClient>();
-            var logger = XUnitLogger.CreateLogger<CachedHackerNewsServiceDecorator>(_testOutputHelper);
-            _service = new CachedHackerNewsServiceDecorator(_mockHackerNewsService.Object, logger);
+            var logger = XUnitLogger.CreateLogger<CachedHackerNewsService>(_testOutputHelper);
+            _service = new CachedHackerNewsService(_mockHackerNewsService.Object, logger);
             _fixture = new Fixture();
         }
 

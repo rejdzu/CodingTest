@@ -1,14 +1,15 @@
+using System.Text.Json;
 using Api.Interfaces;
 using Api.Models;
 
 namespace Api.Services
 {
-    public class HackerNewsService : IHackerNewsServiceClient
+    public class HackerNewsServiceClient : IHackerNewsServiceClient
     {
         private readonly HttpClient _client;
         private readonly ILogger _logger;
 
-        public HackerNewsService(HttpClient client, ILogger<HackerNewsService> logger)
+        public HackerNewsServiceClient(HttpClient client, ILogger<HackerNewsServiceClient> logger)
         {
             _client = client;
             _logger = logger;
@@ -19,7 +20,7 @@ namespace Api.Services
             try
             {
                 var result = await _client.GetFromJsonAsync<int[]>("v0/beststories.json", cancellationToken);
-                return result;
+                return result ?? throw new JsonException("Failed to deserialize best stories");
             }
             catch (Exception e)
             {
@@ -33,7 +34,7 @@ namespace Api.Services
             try
             {
                 var result = await _client.GetFromJsonAsync<HackerNewsItemDto>($"v0/item/{itemId}.json", cancellationToken);
-                return result;
+                return result ?? throw new JsonException($"Failed to deserialize item with id {itemId}");
             }
             catch (Exception e)
             {

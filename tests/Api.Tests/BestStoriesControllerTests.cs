@@ -83,6 +83,7 @@ namespace Api.Tests
             Assert.NotNull(result.Result);
             var statusCodeResult = Assert.IsAssignableFrom<ObjectResult>(result.Result);
             Assert.NotNull(statusCodeResult);
+            Assert.NotNull(statusCodeResult.Value);
             Assert.Equal((int)HttpStatusCode.InternalServerError, statusCodeResult.StatusCode);
             Assert.Equal("An error occured while processing your request.", statusCodeResult.Value.ToString());
         }

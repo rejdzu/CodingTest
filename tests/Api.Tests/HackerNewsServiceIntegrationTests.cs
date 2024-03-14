@@ -8,12 +8,12 @@ namespace Api.Tests
     public class HackerNewsServiceIntegrationTests
     {
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly ILogger<HackerNewsService> _logger;
+        private readonly ILogger<HackerNewsServiceClient> _logger;
 
         public HackerNewsServiceIntegrationTests(ITestOutputHelper testOutputHelper)
         {
             _testOutputHelper = testOutputHelper;
-            _logger = XUnitLogger.CreateLogger<HackerNewsService>(_testOutputHelper);
+            _logger = XUnitLogger.CreateLogger<HackerNewsServiceClient>(_testOutputHelper);
         }
 
         [Fact]
@@ -23,7 +23,7 @@ namespace Api.Tests
             using var client = new HttpClient();
             client.BaseAddress = new Uri("https://hacker-news.firebaseio.com/");
 
-            var service = new HackerNewsService(client, _logger);
+            var service = new HackerNewsServiceClient(client, _logger);
 
             // Act
             var data = await service.GetBestStoriesAsync();
@@ -42,7 +42,7 @@ namespace Api.Tests
             using var client = new HttpClient();
             client.BaseAddress = new Uri("https://hacker-news.firebaseio.com/");
 
-            var service = new HackerNewsService(client, _logger);
+            var service = new HackerNewsServiceClient(client, _logger);
 
             // Act
             var data = await service.GetItemAsync(expectedId);
@@ -68,7 +68,7 @@ namespace Api.Tests
             using var client = new HttpClient(handler);
             client.BaseAddress = new Uri("https://hacker-news.firebaseio.com/");
 
-            var service = new HackerNewsService(client, _logger);
+            var service = new HackerNewsServiceClient(client, _logger);
 
             // Act
             var exception = await Assert.ThrowsAsync<HttpRequestException>(() => service.GetBestStoriesAsync());
@@ -87,7 +87,7 @@ namespace Api.Tests
             using var client = new HttpClient(handler);
             client.BaseAddress = new Uri("https://hacker-news.firebaseio.com/");
 
-            var service = new HackerNewsService(client, _logger);
+            var service = new HackerNewsServiceClient(client, _logger);
 
             // Act
             var exception = await Assert.ThrowsAsync<HttpRequestException>(() => service.GetItemAsync(1));
