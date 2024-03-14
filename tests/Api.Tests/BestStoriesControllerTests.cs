@@ -87,5 +87,23 @@ namespace Api.Tests
             Assert.Equal((int)HttpStatusCode.InternalServerError, statusCodeResult.StatusCode);
             Assert.Equal("An error occured while processing your request.", statusCodeResult.Value.ToString());
         }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(500)]
+        public async Task Should_Return_400_StatusCode_When_Query_Parameter_Is_Invalid(int value)
+        {
+            // Act
+            var result = await _controller.GetNBestStoriesAsync(value);
+
+            // Assert
+            Assert.Null(result.Value);
+            Assert.NotNull(result.Result);
+            var statusCodeResult = Assert.IsAssignableFrom<ObjectResult>(result.Result);
+            Assert.NotNull(statusCodeResult);
+            Assert.NotNull(statusCodeResult.Value);
+            Assert.Equal((int)HttpStatusCode.BadRequest, statusCodeResult.StatusCode);
+            Assert.Equal("Parameter n has to be between 0 and 200.", statusCodeResult.Value.ToString());
+        }
     }
 }

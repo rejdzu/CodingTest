@@ -8,6 +8,9 @@ namespace Api.Controllers
     [ApiController]
     public class BestStoriesController : ControllerBase
     {
+        private const string ParameterInvalid = "Parameter n has to be between 0 and 200.";
+        private const string GenericError = "An error occured while processing your request.";
+
         private readonly IBestStoriesService _bestStoriesService;
         private readonly ILogger _logger;
 
@@ -20,6 +23,11 @@ namespace Api.Controllers
         [HttpGet("")]
         public async Task<ActionResult<IEnumerable<BestStoryDto>>> GetNBestStoriesAsync([FromQuery] int n)
         {
+            if (n < 0 || n > 200)
+            {
+                return BadRequest(ParameterInvalid);
+            }
+
             try
             {
                 return await _bestStoriesService.GetNBestStoriesAsync(n);
@@ -27,7 +35,7 @@ namespace Api.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "Error getting {n} best stories", n);
-                return StatusCode(500, "An error occured while processing your request.");
+                return StatusCode(500, GenericError);
             }
         }
     }

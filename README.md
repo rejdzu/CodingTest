@@ -39,7 +39,7 @@ Since description of the task is not clearly stating, if sorting should be done 
 
 ## Tests
 
-Application has almost 90% coverage. Tests include unit test for written services and controller as well as integration tests for the Hacker News API client.
+Application has almost 80% coverage. Tests include unit test for written services and controller as well as integration tests for the Hacker News API client.
 
 ## Optimizations
 
@@ -51,7 +51,9 @@ Main optimization for keeping number of calls to the Hacker News API is done in 
 
 ## Possible improvements
 
+- Add rest of tests to increase coverage
 - Add proper configuration for urls, hardcoded expiry timespans, etc.
+- Add proper validation using FluentValidation or other frameworks
 - Add integration tests for the API using TestServer
 - Add acceptance tests
 - Add docker build
