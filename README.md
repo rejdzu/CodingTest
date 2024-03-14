@@ -49,10 +49,12 @@ Main optimization for keeping number of calls to the Hacker News API is done in 
 - **Request coalescing**: If more than one request for the same id is triggered at the same time, only one call is made to the external API. All other calls await on the response from the initial call.
 - **Caching**: Responses are cached for 30 seconds and subsequent calls are using it in the first place.
 
+Another optimization is done inside **BestStoriesService** class, where it runs those "n" fetches in parallel. Right now that value is hardcoded to 10 calls.
+
 ## Possible improvements
 
 - Add rest of tests to increase coverage
-- Add proper configuration for urls, hardcoded expiry timespans, etc.
+- Add proper configuration for urls, hardcoded expiry timespans, how many fetches run in parallel etc.
 - Add proper validation using FluentValidation or other frameworks
 - Add integration tests for the API using TestServer
 - Add acceptance tests

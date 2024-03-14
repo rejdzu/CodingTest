@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using Api.Interfaces;
 using Api.Models;
 
@@ -5,6 +6,7 @@ namespace Api.Services
 {
     public class BestStoriesService : IBestStoriesService
     {
+        private const int MaxParallelItemsFetch = 10;
         private readonly IHackerNewsService _hackerNewsService;
 
         public BestStoriesService(IHackerNewsService hackerNewsService)
@@ -18,18 +20,20 @@ namespace Api.Services
 
             var count = Math.Min(n, bestStoriesIds.Length);
 
-            var result = new BestStoryDto[count];
+            var result = new ConcurrentBag<BestStoryDto>();
 
-            for (var i = 0; i < count; i++)
-            {
-                if (cancellationToken.IsCancellationRequested)
+            await Parallel.ForEachAsync(bestStoriesIds.Take(count),
+                new ParallelOptions { MaxDegreeOfParallelism = MaxParallelItemsFetch, CancellationToken = cancellationToken },
+                async (i, token) =>
                 {
-                    throw new OperationCanceledException();
-                }
+                    if (token.IsCancellationRequested)
+                    {
+                        throw new OperationCanceledException();
+                    }
 
-                var item = await _hackerNewsService.GetItemAsync(bestStoriesIds[i], cancellationToken);
-                result[i] = Map(item);
-            }
+                    var item = await _hackerNewsService.GetItemAsync(i, cancellationToken);
+                    result.Add(Map(item));
+                });
 
             return result.OrderByDescending(x => x.Score).ToArray();
         }
