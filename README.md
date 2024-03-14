@@ -53,7 +53,7 @@ Another optimization is done inside **BestStoriesService** class, where it runs 
 
 ## Possible improvements
 
-- Add rest of tests to increase coverage
+- Add rest of tests to increase coverage, ie cancellation token support, etc.
 - Add proper configuration for urls, hardcoded expiry timespans, how many fetches run in parallel etc.
 - Add proper validation using FluentValidation or other frameworks
 - Add integration tests for the API using TestServer
