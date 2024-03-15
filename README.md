@@ -43,9 +43,9 @@ Application has almost 80% coverage. Tests include unit test for written service
 
 ## Optimizations
 
-Main optimization for keeping number of calls to the Hacker News API is done in class **CachedHackerNewsService**. Those optimizations include:
+Main optimization for keeping minimal number of calls to the Hacker News API is done in class **CachedHackerNewsService**. Those optimizations include:
 
-- **Singleton**: Only one instance of CachedHackerNewsServiceDecorator is registered in DI.
+- **Singleton**: Only one instance of CachedHackerNewsService is registered in DI.
 - **Request coalescing**: If more than one request for the same id is triggered at the same time, only one call is made to the external API. All other calls await on the response from the initial call.
 - **Caching**: Responses are cached for 30 seconds and subsequent calls are using it in the first place.
 
